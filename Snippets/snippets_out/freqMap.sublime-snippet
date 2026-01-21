@@ -1,0 +1,14 @@
+<snippet>
+<content><![CDATA[
+public static Map<Integer,Integer> freqMap(int[] arr){
+    Map<Integer,Integer> map=new HashMap<>();
+    for(int num:arr){
+        if(map.containsKey(num)) map.put(num,map.get(num)+1);
+        else map.put(num,1);
+    }
+    return map;
+}
+]]></content>
+<tabTrigger>freqMap</tabTrigger>
+<scope>source.java</scope>
+</snippet>

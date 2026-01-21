@@ -1,0 +1,10 @@
+<snippet>
+<content><![CDATA[
+public long hashF(int x,int y){
+    long hash=x*201326611L+y;
+    return hash;
+}
+]]></content>
+<tabTrigger>hashF</tabTrigger>
+<scope>source.java</scope>
+</snippet>

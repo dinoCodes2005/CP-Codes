@@ -1,0 +1,7 @@
+<snippet>
+<content><![CDATA[
+public static long abs(long n){return 1L * Math.abs(n);}
+]]></content>
+<tabTrigger>abs</tabTrigger>
+<scope>source.java</scope>
+</snippet>

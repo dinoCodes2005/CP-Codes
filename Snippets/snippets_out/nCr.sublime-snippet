@@ -1,0 +1,16 @@
+<snippet>
+<content><![CDATA[
+public long nCr(long n,long r,long mod){
+    if(r<0||r>n)return 0;
+    r=Math.min(r,n-r);
+    long res=1;
+    for(long i=1;i<=r;i++){
+        res=(res*((n-r+i)%mod))%mod;
+        res=(res*modInverse(i,mod))%mod;
+    }
+    return res;
+}
+]]></content>
+<tabTrigger>nCr</tabTrigger>
+<scope>source.java</scope>
+</snippet>

@@ -1,0 +1,11 @@
+<snippet>
+<content><![CDATA[
+public static long[] readL(int n) throws IOException{
+    long[] arr=new long[n];
+    for(int i=0;i<n;i++) arr[i]=in.l();
+    return arr;
+}
+]]></content>
+<tabTrigger>readL</tabTrigger>
+<scope>source.java</scope>
+</snippet>

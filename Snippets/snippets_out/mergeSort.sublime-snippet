@@ -1,0 +1,22 @@
+<snippet>
+<content><![CDATA[
+void mergeSort(int[] arr){
+    if(arr.length<=1)return;
+    int[] tmp=new int[arr.length];
+    mergeSort(arr,tmp,0,arr.length-1);
+}
+
+void mergeSort(int[] arr,int[] tmp,int l,int r){
+    if(l>=r)return;
+    int m=l+(r-l)/2;
+    mergeSort(arr,tmp,l,m);
+    mergeSort(arr,tmp,m+1,r);
+    for(int i=l;i<=r;i++) tmp[i]=arr[i];
+    int i=l,j=m+1,k=l;
+    while(i<=m && j<=r) arr[k++]=tmp[i]<=tmp[j]?tmp[i++]:tmp[j++];
+    while(i<=m) arr[k++]=tmp[i++];
+}
+]]></content>
+<tabTrigger>mergeSort</tabTrigger>
+<scope>source.java</scope>
+</snippet>

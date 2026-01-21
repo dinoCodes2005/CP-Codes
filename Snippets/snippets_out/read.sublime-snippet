@@ -1,0 +1,11 @@
+<snippet>
+<content><![CDATA[
+public static int[] read(int n) throws IOException{
+    int[] arr=new int[n];
+    for(int i=0;i<n;i++) arr[i]=in.i();
+    return arr;
+}
+]]></content>
+<tabTrigger>read</tabTrigger>
+<scope>source.java</scope>
+</snippet>

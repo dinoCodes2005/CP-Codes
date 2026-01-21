@@ -1,0 +1,51 @@
+<snippet>
+<content><![CDATA[
+static class DSU{
+    Map<Integer,Integer> rank=new HashMap<>(),parent=new HashMap<>(),size=new HashMap<>();
+    DSU(Set<Integer> nodes){
+        for(int node:nodes){
+            rank.put(node,0);
+            parent.put(node,node);
+            size.put(node,1);
+        }
+    }
+    int findPar(int n){
+        if(parent.get(n)==n) return n;
+        int p=findPar(parent.get(n));
+        parent.put(n,p);
+        return p;
+    }
+    void unionBySize(int u,int v){
+        int up=findPar(u),vp=findPar(v);
+        if(up==vp)return;
+        int su=size.get(up),sv=size.get(vp);
+        if(su<sv){
+            parent.put(up,vp);
+            size.put(vp,su+sv);
+        } else {
+            parent.put(vp,up);
+            size.put(up,su+sv);
+        }
+    }
+    void unionByRank(int u,int v){
+        int up=findPar(u),vp=findPar(v);
+        if(up==vp)return;
+        int ru=rank.get(up),rv=rank.get(vp);
+        if(ru<rv) parent.put(up,vp);
+        else if(rv<ru) parent.put(vp,up);
+        else {
+            parent.put(up,vp);
+            rank.put(vp,rv+1);
+        }
+    }
+    boolean checkParent(int u,int v){
+        return findPar(u)==findPar(v);
+    }
+    Map<Integer,Integer> parentMap(){
+        return parent;
+    }
+}
+]]></content>
+<tabTrigger>DSU</tabTrigger>
+<scope>source.java</scope>
+</snippet>

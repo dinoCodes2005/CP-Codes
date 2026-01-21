@@ -1,0 +1,7 @@
+<snippet>
+<content><![CDATA[
+public static long max(long... values){long ans=Long.MIN_VALUE;for(long v:values)ans=Math.max(ans,v);return ans;}
+]]></content>
+<tabTrigger>max</tabTrigger>
+<scope>source.java</scope>
+</snippet>

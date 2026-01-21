@@ -1,0 +1,7 @@
+<snippet>
+<content><![CDATA[
+public static int lcm(int a,int b){return (int)(a*b)/gcd(a,b);}
+]]></content>
+<tabTrigger>lcm</tabTrigger>
+<scope>source.java</scope>
+</snippet>
