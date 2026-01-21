@@ -1,8 +1,6 @@
-<snippet>
-<content><![CDATA[
 /*
     Author : Rahul Chowdhary AKA Dino
-    Instituite : Vellore Institute of Technology
+    Instituite : Vellore Instituite of Technology
 */
 
 import java.io.*;
@@ -36,9 +34,23 @@ public class solution {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O()
-        //S.C : O()
+        //T.C : O(nlogn)
+        //S.C : O(n)
+        int n = in.i();
+        long s[] = new long[n+1];
+        for(int i=1;i<=n;i++) s[i] = in.i();
+        long dp[] = new long[n+2];
+        Arrays.fill(dp,1L);
+        for(int i=n;i>=1;i--){
+            for(int j=2;j*i <= n;j++){
+                if(s[i] < s[j])
+                    dp[i] = max(1L+dp[j*i],dp[i]);
+            }
+        }
+ 
+        out.pl(dp[1]);
     }
+ 
 
     static class FastReader {
         BufferedReader br;
@@ -75,16 +87,6 @@ public class solution {
         boolean contains(string substr) {return sb.toString().contains(substr.toString());}
     }
 
-    static class map<K,V> extends HashMap<K,V>{
-        @Override public V get(Object k){ return super.get(k); }
-        public V get(K k, V def){ return super.getOrDefault(k,def); }
-        public map<K,V> p(K k, V v){ super.put(k,v); return this; }
-        public V r(K k){ return super.remove(k); }
-        public boolean ck(K k){ return super.containsKey(k); }
-        public boolean hv(V v){ return super.containsValue(v); }
-        public V cia(K k, java.util.function.Function<? super K, ? extends V> f){ return super.computeIfAbsent(k,f); }
-    }
-
     static class pw extends PrintWriter {
         pw(OutputStream out) {super(out);}
         void p(Object x){print(x);}
@@ -92,7 +94,3 @@ public class solution {
         void pl(Object x) {println(x);}
     }
 }
-]]></content>
-<tabTrigger>solution</tabTrigger>
-<scope>source.java</scope>
-</snippet>
