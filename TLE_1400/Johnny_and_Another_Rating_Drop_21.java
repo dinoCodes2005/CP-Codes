@@ -39,6 +39,8 @@ public class Johnny_and_Another_Rating_Drop_21 {
     public void solveTestCase() throws IOException {
         //T.C : O()
         //S.C : O()
+
+        print("HEllo");
     }
 
     static class FastReader {

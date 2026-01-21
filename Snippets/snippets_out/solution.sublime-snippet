@@ -21,6 +21,7 @@ public class solution {
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
 
     public static void main(String[] args) throws Exception {
+        long start = System.currentTimeMillis(); 
         if (System.getProperty("ONLINE_JUDGE") == null) {
             in = new FastReader(new FileInputStream("input.txt"));
             out = new pw(new FileOutputStream("output.txt"));
@@ -31,6 +32,8 @@ public class solution {
         int t = in.i();
         solution obj = new solution();
         while(t-- > 0) obj.solveTestCase();
+        long end = System.currentTimeMillis();
+        System.err.println("Time: " + (end - start) + " ms");
         out.flush();
         out.close();
     }
