@@ -1,0 +1,5 @@
+{
+    "shell_cmd": "javac \"$file_name\" && java -DONLINE_JUDGE=1 ${file_base_name} < input.txt > output.txt",
+    "selector": "source.java",
+    "working_dir": "$file_path"
+}
