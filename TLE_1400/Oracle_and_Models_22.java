@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class solution {
+public class Oracle_and_Models_22 {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -19,6 +19,7 @@ public class solution {
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
 
     public static void main(String[] args) throws Exception {
+        long start = System.currentTimeMillis(); 
         if (System.getProperty("ONLINE_JUDGE") == null) {
             in = new FastReader(new FileInputStream("input.txt"));
             out = new pw(new FileOutputStream("output.txt"));
@@ -27,8 +28,10 @@ public class solution {
             out = new pw(System.out);
         }
         int t = in.i();
-        solution obj = new solution();
+        Oracle_and_Models_22 obj = new Oracle_and_Models_22();
         while(t-- > 0) obj.solveTestCase();
+        long end = System.currentTimeMillis();
+        System.err.println("Time: " + (end - start) + " ms");
         out.flush();
         out.close();
     }
@@ -38,17 +41,16 @@ public class solution {
         //S.C : O(n)
         int n = in.i();
         long s[] = new long[n+1];
-        for(int i=1;i<=n;i++) s[i] = in.i();
+        for(int i=1;i<=n;i++) s[i] = in.l();
         long dp[] = new long[n+2];
         Arrays.fill(dp,1L);
         for(int i=n;i>=1;i--){
             for(int j=2;j*i <= n;j++){
-                if(s[i] < s[j])
+                if(s[i] < s[j*i])
                     dp[i] = max(1L+dp[j*i],dp[i]);
             }
         }
- 
-        out.pl(dp[1]);
+        out.pl(max(dp));
     }
  
 
@@ -94,3 +96,7 @@ public class solution {
         void pl(Object x) {println(x);}
     }
 }
+
+
+
+
