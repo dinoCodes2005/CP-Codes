@@ -36,19 +36,6 @@ public class Codechef {
     public void solveTestCase() throws IOException {
         //T.C : O()
         //S.C : O()
-        int n = in.i();
-        long s[] = new long[n+1];
-        for(int i=1;i<=n;i++) s[i] = in.i();
-        long dp[] = new long[n+2];
-        Arrays.fill(dp,1L);
-        for(int i=n;i>=1;i--){
-            for(int j=2;j*i <= n;j++){
-                if(s[i] < s[j])
-                    dp[i] = max(1L+dp[j*i],dp[i]);
-            }
-        }
- 
-        out.pl(dp[1]);
     }
 
     static class FastReader {
