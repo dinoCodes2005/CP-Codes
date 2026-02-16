@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class subarray {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -27,8 +27,8 @@ public class Johnny_and_Another_Rating_Drop_21 {
             in = new FastReader(System.in);
             out = new pw(System.out);
         }
-        int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        int t = 1;
+        subarray obj = new subarray();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -36,26 +36,89 @@ public class Johnny_and_Another_Rating_Drop_21 {
         out.close();
     }
 
-    public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+    int a[] = {-2,1,-3,4,-1,2,1,1,-5,4};
+	int n = a.length;
+
+	public void solveTestCase() throws IOException {
+	    int res[] = f(0,n-1);
+	    out.pl("Sum = " + res[1]);
+        out.printf("i = %d , j = %d\n",res[3],res[4]);
+        int s = 0;
+        int l = -1;
+        int r = -1;
+        for(int i=0;i<n;i++){
+            int now = 0;
+            for(int j=i;j<n;j++){
+                now += a[j];
+                if(now > s){
+                    s = now;
+                    l = i;
+                    r = j;
+                }
+            }
+        }
+        out.pl("Sum = " + s);
+        out.printf("i = %d , j = %d\n",l,r);
+	}
+
+	public int[] f(int l,int r){
+	    if(l == r){
+	        int v = a[l];
+	        return new int[]{v, v, v,l,r};
+	    }
+
+	    int m = (l + r) / 2;
+
+	    int[] L = f(l,m);
+	    int[] R = f(m+1,r);
+	    int[] cross = f(l,m,r);
+
+	    int lss = L[0];
+	    int rss = R[2];
+	    int mss = Math.max(Math.max(L[1], R[1]), cross[2]);
+        int i = l;
+        int j = r;
+        if((lss >= rss) && (lss >= cross[2])){
+            i = L[3];
+            j = L[4];
+        }else if((rss >= lss) && (rss >= cross[2])){
+            i = R[3];
+            j = R[4];
+        }else if((cross[2] >= lss) && (cross[2] >= lss)){
+            i = cross[0];
+            j = cross[1];
         }
 
-        out.pl(s);
-    }
+	    return new int[]{lss, mss, rss, i,j};
+	}
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
-    }
+	public int[] f(int l,int m,int r){
+	    int lsum = Integer.MIN_VALUE;
+	    int rsum = Integer.MIN_VALUE;
+
+	    int temp = 0;
+        int i = m;
+	    for(int x = m; x >= l; x--){
+	        temp += a[x];
+            if(temp > lsum){
+                lsum = temp;
+                i = x;
+            }
+	    }
+
+	    temp = 0;
+        int j = m+1;
+	    for(int x = m+1; x <= r; x++){
+	        temp += a[x];
+	        if(temp > rsum){
+                rsum = temp;
+                j = x;
+            }
+	    }
+
+	    return new int[]{i,j,lsum + rsum};
+	}
+
 
     static class FastReader {
         BufferedReader br;

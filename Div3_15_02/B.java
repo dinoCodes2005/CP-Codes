@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class B {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        B obj = new B();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,65 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O()
+        //S.C : O()
+    	int n = in.i();
+    	int a[] = new int[n+1];
+    	for(int i=1;i<=n;i++) a[i] = in.i();
+    	int done[] = new int[n+1];
+    	Arrays.fill(done,-1);
+        for(int i=1;i<=n;i++){
+        	boolean yes = true;
+        	int t = -1;
+        	for(int j=i;j<=n;j*=2){
+        		if(done[j] != -1){
+        			yes = false;
+        			t = done[j];
+        			break;
+        		}
+        	}
+        	if(yes){
+        		for(int j=i;j<=n;j*=2){
+        			done[j] = i;
+	        	}
+        	}else {
+        		for(int j=i;j<=n;j*=2){
+        			done[j] = t;
+        		}
+        	}
+        }
+        Map<Integer,List<int[]>> m = new HashMap<>();
+        for(int i=1;i<=n;i++){
+        	if(done[i] != -1){
+        		m.computeIfAbsent(done[i],k->new ArrayList<>()).add(new int[]{i,a[i]});
+        	}
         }
 
-        out.pl(s);
-    }
+        int res[] = a.clone();
+        for(int key:m.keySet()){
+        	List<int[]> l = m.get(key);
+        	List<Integer> idx = new ArrayList<>();
+        	for(int row[]:l){
+        		idx.add(row[0]);
+        	}
+        	Collections.sort(l,new Comparator<int[]>(){
+        		public int compare(int[] x,int[] y){
+        			return x[1] - y[1];
+        		}
+        	});
+        	for(int i=0;i<idx.size();i++){
+        		res[idx.get(i)] = l.get(i)[1];
+        	}
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
         }
-        return s;
+        for(int i=2;i<=n;i++){
+        	if(res[i] < res[i-1]) {
+        		out.pl("No");
+        		return;
+        	} 
+        }
+
+        out.pl("Yes");
     }
 
     static class FastReader {

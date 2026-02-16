@@ -6,7 +6,8 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class P5 {
+	static int pinf = Integer.MAX_VALUE;
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -18,6 +19,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
     public static void print(int[] a,int n) {for(int val:a) out.p(val+" "); out.pl();}
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
 
+
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis(); 
         if (System.getProperty("ONLINE_JUDGE") == null) {
@@ -28,33 +30,38 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        P5 obj = new P5();
+		factors = new HashMap<>();
+		for(int i = 1;i <=(int)3*1e5;i++){
+		    for(int j = i; j <= (int)3*1e5; j += i){
+		        factors.computeIfAbsent(j,k->new ArrayList<>()).add(i);
+		    }
+		}
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
         out.flush();
         out.close();
     }
-
+    static Map<Integer,List<Integer>> factors;
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O(n*logn)
+        //S.C : O(n*logn)
+        int n = in.i();
+        int dp[] = new int[n+1];
+        Arrays.fill(dp,pinf);
+        for(int i=0;i<n;i++) dp[in.i()] = 1;
+        string res = new string();
+        for(int k=1;k<=n;k++){
+        	List<Integer> f = factors.get(k);
+        	for(int factor:f){
+        		int another = k / factor;
+        		if(dp[another] != pinf && dp[factor] != pinf) dp[k] = min(dp[k],dp[another] + dp[factor]);
+        	}
+        	res.add(dp[k] == pinf ? -1 : dp[k]);
+        	res.add(" ");
         }
-
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+        out.pl(res);
     }
 
     static class FastReader {

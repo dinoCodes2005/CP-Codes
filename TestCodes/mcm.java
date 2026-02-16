@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class mcm {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -27,34 +27,48 @@ public class Johnny_and_Another_Rating_Drop_21 {
             in = new FastReader(System.in);
             out = new pw(System.out);
         }
-        int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        int t = 1;
+        mcm obj = new mcm();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
         out.flush();
         out.close();
     }
-
+	int s[][];
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O()
+        //S.C : O()
+    	int a[] = {4,5,3,2,7};
+    	int n = a.length - 1;
+        int dp[][] = new int[n+1][n+1];
+        s = new int[n+1][n+1];
+        for(int len=2;len<=n;len++){
+        	for(int i=1;i<=n-len+1;i++){
+        		int j = i + len - 1;
+        		dp[i][j] = Integer.MAX_VALUE;
+        		for(int k=i;k<=j-1;k++){
+        			int x = dp[i][k] + dp[k+1][j] + a[i-1]*a[k]*a[j];
+        			if(x < dp[i][j]){
+        				s[i][j] = k;
+        				dp[i][j] = x;
+        			}
+        		}
+        	}
         }
 
-        out.pl(s);
+        out.pl("Min ops = " + dp[1][n]);
+        f(1,n);
     }
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+    public void f(int i,int j){
+    	if(i == j) out.printf("A%d",i);
+    	else {
+    		out.p("(");
+    		f(i,s[i][j]);
+    		f(s[i][j]+1,j);
+    		out.p(")");
+    	}
     }
 
     static class FastReader {

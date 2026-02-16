@@ -6,7 +6,8 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class C {
+	static int pinf = Integer.MAX_VALUE;
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -17,6 +18,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
     public static long[] readL(int n) throws IOException{long[] arr=new long[n];for(int i=0;i<n;i++) arr[i]=in.l();return arr;}
     public static void print(int[] a,int n) {for(int val:a) out.p(val+" "); out.pl();}
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
+    public static int abs(int n){return Math.abs(n);}
 
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis(); 
@@ -28,33 +30,35 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        C obj = new C();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
         out.flush();
         out.close();
     }
-
+    int a[];
+    int n;
+    Integer dp[][];
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O(36 * n)
+        //S.C : O(7 * n)
+        n = in.i();
+        a = read(n);
+        int dp[][] = new int[n+1][7];
+        for(int l=0;l<=6;l++) dp[n][l] = 0;
+        for(int i=n-1;i>=0;i--){
+        	for(int l=6;l>=0;l--){
+        		dp[i][l] = pinf;
+        		for(int j=1;j<=6;j++){
+					if(j != abs(7-l) && j != l) 
+						dp[i][l] = min(dp[i][l],(a[i]==j ? 0 : 1) + dp[i+1][j]);
+        		}
+        	}
         }
 
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+        int ans = dp[0][0];
+        out.pl(ans);
     }
 
     static class FastReader {

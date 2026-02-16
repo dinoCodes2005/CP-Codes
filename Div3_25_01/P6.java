@@ -6,7 +6,8 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class P6 {
+	static int pinf = Integer.MAX_VALUE;
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +29,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        P6 obj = new P6();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,25 +38,96 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
-        }
+        //T.C : O()
+        //S.C : O()
+        int n = in.i();
+        int ax = in.i(),ay = in.i();
+        int bx = in.i(),by = in.i();
+        int a[][] = new int[n][2];
+        for(int i=0;i<n;i++) a[i][0] = in.i();
+        for(int i=0;i<n;i++) a[i][1] = in.i();
 
-        out.pl(s);
+        Arrays.sort(a,new Comparator<>(){
+        	public int compare(int x[],int y[]){
+        		int cmp = Integer.compare(x[0], y[0]);
+        		if(cmp == 0) return Integer.compare(x[1],y[1]);
+        		return cmp;
+        	}
+        });
+        List<List<int[]>> l = new ArrayList<>();
+        List<int[]> curr = new ArrayList<>();
+        curr.add(a[0]);
+        boolean done = false;
+        for(int i=1;i<n;){
+        	done = true;
+        	while(i < n && a[i][0] == a[i-1][0]) {curr.add(a[i]);i++;}
+        	List<int[]> now = new ArrayList<>();
+        	for(int[] val:curr) now.add(new int[]{val[0],val[1]});
+        	l.add(now);
+        	curr = new ArrayList<>();
+        	if(i < n) {curr.add(a[i]);i++;}
+        	done = false;
+        }
+        if(!done) l.add(curr);
+        int m = l.size();
+        int dp[] = new int[m][2];
+        for(List<int[]> y:l.get(m-1)){
+        	dp[m-1][1] = pinf;
+        	int sz = y.size();
+        	for(int i=0;i<sz;i++){
+        		int down = 0;
+        		int up = 0;
+        		if(i == 0) down = y.get(sz-1)[1] - y.get(0)[1];
+        		else down = 2*(y.get(sz-1)[1] - y.get(i)[1]) + (y.get(i)[1] - y.get(0)[1]);
+
+        		if(i == sz-1) up = y.get(sz-1)[1] - y.get(0)[1];
+        		else up = 2*(y.get(i)[1] - y.get(0)[1]) + (y.get(sz-1) + y.get(i)[1]);
+
+        		if(down < dp[m-1][1]) {
+        			dp[m-1][1] = down;
+        			dp[m-1][1] = i;
+        		}
+
+        		if(up < dp[m-1][1]) {
+        			dp[m-1][1] = up;
+        			dp[m-1][1] = i;
+        		}
+        	} 
+        }
+        for(int i=m-2;i>=0;i--){
+			dp[i][1] = pinf;
+			List<int[]> y = l.get(i);
+        	int sz = y.size();
+        	for(int i=0;i<sz;i++){
+        		int down = 0;
+        		int up = 0;
+        		if(i == 0) down = y.get(sz-1)[1] - y.get(0)[1];
+        		else down = 2*(y.get(sz-1)[1] - y.get(i)[1]) + (y.get(i)[1] - y.get(0)[1]);
+
+        		if(i == sz-1) up = y.get(sz-1)[1] - y.get(0)[1];
+        		else up = 2*(y.get(i)[1] - y.get(0)[1]) + (y.get(sz-1) + y.get(i)[1]);
+
+        		int dt = 
+
+        		if(down + dp[i+1][1] < dp[i][1]) {
+        			dp[i][1] = down;
+        			dp[i][1] = i;
+        		}
+
+        		if(up + dp[i+1][1] < dp[i][1]) {
+        			dp[i][1] = up;
+        			dp[i][1] = i;
+        		}
+        	} 
+        }
+        // for(List<int[]> row:l){
+        // 	for(int coods[]:row) out.printf("(%d,%d),",coods[0],coods[1]);
+        // 	out.pl();
+        // }
+        // out.pl();
     }
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
-    }
+    public int d()
 
     static class FastReader {
         BufferedReader br;

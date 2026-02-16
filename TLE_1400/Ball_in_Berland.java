@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class Ball_in_Berland {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        Ball_in_Berland obj = new Ball_in_Berland();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,39 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O(n)
+        //S.C : O(n)
+        int a = in.i();
+        int b = in.i();
+        int k = in.i();
+        map<Integer,Integer> boy = new map<>();
+        map<Integer,Integer> girl = new map<>();
+        for(int i=0;i<k;i++) {
+            int val = in.i();
+            // x[i][0] = val;
+            boy.put(val,boy.get(val,0)+1);
+        }
+        for(int i=0;i<k;i++) {
+            int val = in.i();
+            // x[i][1] = val;
+            girl.put(val,girl.get(val,0)+1);
+        }
+        long total = k*(k-1l) / 2l;
+        long cmn = 0;
+        for(int key:boy.keySet()){
+            long cnt = boy.get(key);
+            cmn += (cnt*(cnt-1l)/2l);
         }
 
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
+        for(int key:girl.keySet()){
+            long cnt = girl.get(key);
+            cmn += (cnt*(cnt-1l)/2l);
         }
-        return s;
+
+        long ans = total - cmn;
+        out.pl(ans);
+
+
     }
 
     static class FastReader {

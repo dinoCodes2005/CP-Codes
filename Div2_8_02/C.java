@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class C {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        C obj = new C();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,49 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
+        //T.C : O(26*nlogn)
         //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        int n = in.i();
+        int k = in.i();
+        int a[][] = new int[n][26];
+        for(int i=0;i<k;i++){
+            string s = in.nl();
+            for(int j=0;j<n;j++) a[j][s.c(j)-'a']++;
         }
+        for(int len = 1;len<=n;len++){
+            if(n % len != 0) continue;
+            string res = new string();
+            boolean valid = true;
+            for(int j=0;j<len;j++){
+                boolean found = false;
+                for(int c=0;c<26;c++){
+                    boolean yes = true;
+                    for(int i=j; i<n; i+=len){
+                        if(a[i][c] == 0) {
+                            yes = false;
+                            break;
+                        }
+                    }
+                    if(yes) {
+                        res.add((char)('a'+c));
+                        found = true;
+                        break;
+                    }
+                }
 
-        out.pl(s);
-    }
+                if(!found) {
+                    valid = false;
+                    break;
+                }
+            }
+            if(valid && res.length() == len) {
+                string ans = new string();
+                for(int i=0;i<n/len;i++) ans.add(res);
+                out.pl(ans);
+                return;
+            }
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
         }
-        return s;
     }
 
     static class FastReader {

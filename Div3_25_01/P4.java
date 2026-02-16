@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class P4 {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        P4 obj = new P4();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,26 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
-        }
+        //T.C : O(nlogn)
+        //S.C : O(n)
+        int n = in.i();
+        long a[] = readL(n);
+        long b[] = readL(n);
+        Arrays.sort(a);
+        long strikes[] = new long[n];
+        strikes[0] = b[0];
+        for(int i=1;i<n;i++) {strikes[i] = strikes[i-1] + b[i];}
 
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
+        long max = 0;
+        for(int x=0;x<n;x++){
+        	long sword_left = n - x;
+			int pos = Arrays.binarySearch(strikes,sword_left);
+			pos = pos >= 0 ? pos : -pos - 1;
+			if(strikes[pos] == sword_left) pos++;
+			long now = pos * a[x];
+			max = max(now,max);
         }
-        return s;
+        out.pl(max);
     }
 
     static class FastReader {

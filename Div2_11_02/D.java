@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class D {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        D obj = new D();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,31 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O(n * sqrt(n))
+        //S.C : O(n)
+        int n = in.i();
+        int a[] = read(n);
+        int x = 500;
+        long ans = 0;
+        for (int j = 0; j < n;j++) {
+            if (a[j] < x) {
+                for (int k = 1;k < x;k++) {
+                    int i = j - k * a[j];
+                    if (i >= 0 && a[i] == k) {
+                        ans++;
+                    }
+                }
+            } 
+            else {
+                for (int i = 1; i * a[j] <= 2 * n && j - i * a[j] >= 0; i++) {
+                    if (a[j - i * a[j]] == i) {
+                        ans++;
+                    }
+                }
+            }
         }
 
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+        out.pl(ans);
     }
 
     static class FastReader {

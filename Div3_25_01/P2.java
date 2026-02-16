@@ -6,14 +6,14 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class P2 {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
     public static long max(long... values){long ans=Long.MIN_VALUE;for(long v:values)ans=Math.max(ans,v);return ans;}
     public static int min(int... values){int ans=Integer.MAX_VALUE;for(int v:values)ans=Math.min(ans,v);return ans;}
     public static long min(long... values){long ans=Long.MAX_VALUE;for(long v:values)ans=Math.min(ans,v);return ans;}
-    public static int[] read(int n) throws IOException{int[] arr=new int[n];for(int i=0;i<n;i++) arr[i]=in.i();return arr;}
+    public static Integer[] read(int n) throws IOException{Integer[] arr=new Integer[n];for(int i=0;i<n;i++) arr[i]=in.i();return arr;}
     public static long[] readL(int n) throws IOException{long[] arr=new long[n];for(int i=0;i<n;i++) arr[i]=in.l();return arr;}
     public static void print(int[] a,int n) {for(int val:a) out.p(val+" "); out.pl();}
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        P2 obj = new P2();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,19 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
-        }
-
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+        //T.C : O(nlogn)
+        //S.C : O(n)
+        int n = in.i();
+        Integer a[] = read(n);
+        Integer b[] = a.clone();
+        Arrays.sort(b,Collections.reverseOrder());
+        int i = 0;
+        while(i < n && a[i] == b[i]) out.p(a[i++]+" ");
+        int j = n-1;
+        while(j >= i && a[j] != b[i]) j--;
+        for(int x=j;x>=i;x--) out.p(a[x]+" ");
+        for(int x=j+1;x<n;x++) out.p(a[x]+" ");
+        out.pl();
     }
 
     static class FastReader {

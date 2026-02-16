@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class Zero_Remainder_Array {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        Zero_Remainder_Array obj = new Zero_Remainder_Array();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -37,24 +37,38 @@ public class Johnny_and_Another_Rating_Drop_21 {
     }
 
     public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
+        //T.C : O(n)
+        //S.C : O(n)
+        int n = in.i();
+        long k = in.l();
+        long a[] = readL(n);
+        Map<Long,Integer> map = new HashMap<>();
+        boolean all_div = true;
+        for(long val:a){
+            if(val % k != 0){
+                all_div = false;
+                long mod = k - (val % k);
+                map.put(mod,map.getOrDefault(mod,0)+1);
+            }
         }
 
-        out.pl(s);
-    }
-
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
+        if(all_div){
+            out.pl(0);
+            return;
         }
-        return s;
+
+        long f = 0;
+        long key = 0;
+
+        for(long x:map.keySet()){
+            if(map.get(x) > f){
+                f = map.get(x);
+                key = x;
+            }else if(map.get(x) == f && x > key) key = x;
+        }
+
+        long ans = (f-1L) * k + 1L + key;
+        out.pl(ans);
     }
 
     static class FastReader {

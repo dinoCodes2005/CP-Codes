@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class solution {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -28,7 +28,7 @@ public class Johnny_and_Another_Rating_Drop_21 {
             out = new pw(System.out);
         }
         int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        solution obj = new solution();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -36,25 +36,44 @@ public class Johnny_and_Another_Rating_Drop_21 {
         out.close();
     }
 
-    public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
-        }
+    int a[][];
+    int n;
+    int m;
 
-        out.pl(s);
+    public void solveTestCase() throws IOException {
+        //T.C : O()
+        //S.C : O()
+        a = new int[n][m];
+        n = in.i();
+        m = in.i();
+        for(int i=0;i<n;i++) a[i] = read(m);
+
     }
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+    public int divide(int xl,int yl,int xr,int yr){
+    	if(xl > xr || yl > yr) return 0;
+    	if(xl == xr && yl == yr) return a[xl][yl];
+    	int midx = (xl + xr) / 2;
+    	int midy = (yl + yr) / 2;
+    	int q1 = divide(midx,yl,xr,midy);
+    	int q2 = divide(xl,yl,midx,midy);
+    	int q3 = divide(x,midy,midx,yr);
+    	int q4 = divide(midx,midy,xr,yr);
+    	int max = max(q1,q2,q3,q4);
+
+    }
+
+    public int crossV(int top,int bottom,int left,int )
+
+    public int kadane(int arr[]){
+    	int n = arr.length;
+    	int cur = arr[0];
+    	int max = arr[0];
+    	for(int i=1;i<n;i++){
+    		cur = max(cur + a[i],max);
+    		max = max(max,cur); 
+    	}
+    	return max;
     }
 
     static class FastReader {

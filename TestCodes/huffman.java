@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Johnny_and_Another_Rating_Drop_21 {
+public class huffman {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -27,8 +27,8 @@ public class Johnny_and_Another_Rating_Drop_21 {
             in = new FastReader(System.in);
             out = new pw(System.out);
         }
-        int t = in.i();
-        Johnny_and_Another_Rating_Drop_21 obj = new Johnny_and_Another_Rating_Drop_21();
+        int t = 1;
+        huffman obj = new huffman();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -36,25 +36,67 @@ public class Johnny_and_Another_Rating_Drop_21 {
         out.close();
     }
 
-    public void solveTestCase() throws IOException {
-        //T.C : O(64*64)
-        //S.C : O(1)
-        long n = in.l();
-        long s = 0;
-        for(int j=0;j<64;j++){
-            long bit = ((n >> j) & 1L);
-            if(bit == 1) s += s(1L << j);
-        }
-
-        out.pl(s);
+    string s = new string("BCCABBDDAECCBBAEDDCC");
+    int n = s.length();
+    int a[] = new int[26];
+    class Node{
+    	//char , cnt
+    	int[] val;
+    	Node l,r;
+    	Node(int[] val,Node l,Node r){
+    		this.val = val;
+    		this.l = l;
+    		this.r = r;
+    	}
     }
+    Map<Character,string> codes;
+    public void solveTestCase() throws IOException {
+        //T.C : O()
+        //S.C : O()
+    	for(int i=0;i<n;i++){
+    		a[s.c(i)-'A']++;
+    	}
+    	codes = new HashMap<>();
+		PriorityQueue<Node> pq = new PriorityQueue<>(new Comparator<Node>() {
+		    @Override
+		    public int compare(Node x, Node y) {
+		        return x.val[1] - y.val[1];
+		    }
+		});
 
-    public long s(long n){
-        long s = 0;
-        for(int j=0;j<64;j++){
-            s += n / (1L << j);
-        }
-        return s;
+
+    	for(int i=0;i<26;i++){
+    		if(a[i] != 0) pq.offer(new Node(new int[]{i,a[i]},null,null));
+    	}
+
+    	while(pq.size() >= 2){
+    		Node s = pq.poll();
+    		Node ss = pq.poll();
+    		Node parent = new Node(
+    			new int[]{-1,s.val[1] + ss.val[1]},
+    			s,ss
+    		);
+    		pq.offer(parent);
+    	}
+
+    	Node root = pq.poll();
+    	f(root,new string());
+    	for(char key:codes.keySet()){
+    		out.pl(key + " -> " + codes.get(key));
+    	}
+
+    }
+    public void f(Node root,string code){
+    	if(root == null) return;
+    	if(root.l == null && root.r == null){
+    		char ch = (char)(root.val[0] + 65);
+    		codes.put(ch,code);
+    		return;
+    	}
+    	string L = new string(code.toString());
+    	string R = new string(code.toString());
+    	f(root.l,L.add("0"));
+    	f(root.r,R.add("1"));
     }
 
     static class FastReader {
