@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class AND_sequences {
+public class A {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -17,9 +17,7 @@ public class AND_sequences {
     public static long[] readL(int n) throws IOException{long[] arr=new long[n];for(int i=0;i<n;i++) arr[i]=in.l();return arr;}
     public static void print(int[] a,int n) {for(int val:a) out.p(val+" "); out.pl();}
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
-    
-    public static long f[] = new long[200002];
-    public static long mod = (long)(1e9 + 7);
+
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis(); 
         if (System.getProperty("ONLINE_JUDGE") == null) {
@@ -30,11 +28,7 @@ public class AND_sequences {
             out = new pw(System.out);
         }
         int t = in.i();
-        AND_sequences obj = new AND_sequences();
-        f[1] = f[0] = 1L;
-        for(int i=2;i<200002;i++){
-            f[i] = (i * 1l * f[i-1]) % mod;
-        }
+        A obj = new A();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -42,25 +36,15 @@ public class AND_sequences {
         out.close();
     }
 
-
     public void solveTestCase() throws IOException {
-        //T.C : O(n)
-        //S.C : O(n)
+        //T.C : O(1)
+        //S.C : O(1)
         int n = in.i();
-        int a[] = read(n);
-        int min = min(a);
-        int cnt = 0;
-        for(int val:a) {
-            if(val == min) cnt++;
-            if((min & val) != min){
-                out.pl(0);
-                return;
-            }
-        }
-        long c = (cnt*(cnt-1L)) % mod;
-        long ans = (c * f[n-2]) % mod;
+        int m = in.i();
+        int d = in.i();
+        int each = 1 + d / m;
+        int ans = (n + each - 1) / each;
         out.pl(ans);
-
     }
 
     static class FastReader {

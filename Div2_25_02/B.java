@@ -6,7 +6,7 @@
 import java.io.*;
 import java.util.*;
 
-public class AND_sequences {
+public class B {
     static FastReader in;
     static pw out;
     public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
@@ -17,9 +17,7 @@ public class AND_sequences {
     public static long[] readL(int n) throws IOException{long[] arr=new long[n];for(int i=0;i<n;i++) arr[i]=in.l();return arr;}
     public static void print(int[] a,int n) {for(int val:a) out.p(val+" "); out.pl();}
     public static void print(long[] a,int n) {for(long val:a) out.p(val+" "); out.pl();}
-    
-    public static long f[] = new long[200002];
-    public static long mod = (long)(1e9 + 7);
+    public static long pinf = Long.MAX_VALUE;
     public static void main(String[] args) throws Exception {
         long start = System.currentTimeMillis(); 
         if (System.getProperty("ONLINE_JUDGE") == null) {
@@ -30,11 +28,7 @@ public class AND_sequences {
             out = new pw(System.out);
         }
         int t = in.i();
-        AND_sequences obj = new AND_sequences();
-        f[1] = f[0] = 1L;
-        for(int i=2;i<200002;i++){
-            f[i] = (i * 1l * f[i-1]) % mod;
-        }
+        B obj = new B();
         while(t-- > 0) obj.solveTestCase();
         long end = System.currentTimeMillis();
         System.err.println("Time: " + (end - start) + " ms");
@@ -42,25 +36,64 @@ public class AND_sequences {
         out.close();
     }
 
-
     public void solveTestCase() throws IOException {
-        //T.C : O(n)
-        //S.C : O(n)
-        int n = in.i();
-        int a[] = read(n);
-        int min = min(a);
-        int cnt = 0;
-        for(int val:a) {
-            if(val == min) cnt++;
-            if((min & val) != min){
-                out.pl(0);
-                return;
-            }
+        //T.C : O(165)
+        //S.C : O(18)
+        long x = in.l();
+        long y = x;
+        long fx = s(x)+1;
+        long ffx = s(fx);
+        // out.printf("fx = %d , ffx = %d\n",fx,ffx);
+        long pdt = pinf;
+        long ndt = pinf;
+        for(int d=0;d<=165;d++){
+        	if(pdt == pinf && fx + d == s(fx+d)){
+        		pdt = d;
+        	}
+        	if(ndt == pinf && fx - d > 0 && fx - d == s(fx-d)){
+        		ndt = d;
+        	}
         }
-        long c = (cnt*(cnt-1L)) % mod;
-        long ans = (c * f[n-2]) % mod;
-        out.pl(ans);
+        // out.printf("pdt = %d\n",pdt);
+        // out.printf("ndt = %d\n",ndt);
 
+        List<Integer> l = new ArrayList<>();
+        int j = l.size()-1;
+        while(x > 0){
+        	l.add((int)(x % 10));
+        	x /= 10;
+        	j--;
+        }
+        Collections.sort(l);
+        int L = 0;
+        boolean first = false;
+        for(int i=l.size()-1;i>=0 && ndt != pinf && ndt > 0;i--){
+        	first = true;
+        	ndt -= min(l.get(i),ndt);
+        	L++;
+        }
+
+        int R = 0;
+        boolean second =false;
+        for(int i=0;i<l.size() && pdt != pinf && pdt > 0;i++){
+        	second = true;
+        	pdt -= min(9-l.get(i),pdt);
+        	R++;
+        }
+
+        int ans = Integer.MAX_VALUE;
+        if(first) ans = L;
+        if(second) ans = min(ans,R);
+        out.pl(ans == Integer.MAX_VALUE ? 0 : ans);
+    }
+
+    public long s(long n){
+    	long s = 0;
+    	while(n > 0){
+    		s += (n % 10L);
+    		n /= 10;
+    	}
+    	return s;
     }
 
     static class FastReader {
