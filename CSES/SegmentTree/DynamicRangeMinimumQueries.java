@@ -1,0 +1,155 @@
+import java.io.*;
+import java.util.*;
+
+public class DynamicRangeMinimumQueries {
+    static FastReader in;
+    static pw out;
+    long INF = Long.MAX_VALUE;
+    public class ST{
+        long t[];
+        ST(int a[]){
+            int n = a.length;
+            t = new long[4*n+2];
+            Arrays.fill(t,INF);
+            long root = build(a,0,0,n-1);
+        }
+
+        long build(int[] a,int node,int l,int r){
+            if(l == r){
+                return t[node] = a[l];
+            }
+            int m = l + (r - l) / 2;
+            return t[node] = Math.min(build(a,2*node+1,l,m) , build(a,2*node+2,m+1,r));
+        }
+
+        void u(int a[],int node,int l,int r,int idx,int val){
+            if(l == r){
+                t[node] = val;
+                return;
+            }
+            int m = l + (r - l) / 2;
+            if(idx <= m) u(a,2*node+1,l,m,idx,val);
+            else u(a,2*node+2,m+1,r,idx,val);
+            t[node] = Math.min(t[2*node+1],t[2*node+2]);
+        }
+
+        long query(int node,int l,int r,int s,int e){
+            if(l > r) return 0;
+            if(l == s && e == r) return t[node];
+            int m = l + (r - l) / 2;
+            if(e <= m) return query(2*node+1,l,m,s,e);
+            if(s >= m+1) return query(2*node+2,m+1,r,s,e);
+            return Math.min(query(2*node+1,l,m,s,m) , query(2*node+2,m+1,r,m+1,e));
+        }
+    }
+    
+
+    public static void main(String[] args) throws Exception {
+        try {
+            in = new FastReader(new FileInputStream("input.txt"));
+            out = new pw(new FileOutputStream("output.txt"));
+        } catch(Exception e) {
+            in = new FastReader(System.in);
+            out = new pw(System.out);
+        }
+        DynamicRangeMinimumQueries obj = new DynamicRangeMinimumQueries();
+        long start = System.nanoTime();
+
+        obj.solveTestCase();
+
+        long end = System.nanoTime();
+
+        System.err.println("Time = " + (end - start) / 1_000_000.0 + " ms");
+        out.flush();
+        out.close();
+    }
+
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
+        return arr;
+    }
+
+    public void solveTestCase() throws Exception {
+        // write code
+        int n = in.i();
+        int q = in.i();
+        int a[] = read(n);
+        ST st = new ST(a);
+
+        for(int i=0;i<q;i++){
+            int t = in.i();
+            if(t == 1){
+                int idx = in.i() - 1;
+                int val = in.i();
+                st.u(a,0,0,n-1,idx,val);
+            }else{
+                int s = in.i();
+                int e = in.i();
+                long res = st.query(0,0,n-1,s-1,e-1);
+                out.pl(res);
+            }
+        }
+    }
+
+    static class FastReader {
+        BufferedReader br;
+        StringTokenizer st;
+        public FastReader(InputStream stream){br=new BufferedReader(new InputStreamReader(stream));}
+        public FastReader(FileInputStream stream){br=new BufferedReader(new InputStreamReader(stream));}
+        String n() throws IOException {while(st==null||!st.hasMoreTokens()) st=new StringTokenizer(br.readLine()); return st.nextToken();}
+        string w() throws IOException{return new string(n());}
+        int i() throws IOException {return Integer.parseInt(n());}
+        long l() throws IOException {return Long.parseLong(n());}
+        double d() throws IOException {return Double.parseDouble(n());}
+        string nl() throws IOException {String line = br.readLine();return line == null ? new string() : new string(line);}
+    }
+
+    static class string {
+        StringBuilder sb;
+        string() { sb = new StringBuilder(); }
+        string(java.lang.String s) { sb = new StringBuilder(s); }
+        string add(Object o) { sb.append(o); return this; }
+        string lower() { return new string(sb.toString().toLowerCase()); }
+        public String toString() { return sb.toString(); }
+        public char c(int i){return sb.charAt(i);}
+        public int length(){return sb.length();}
+        string reverse() { return new string(sb.reverse().toString()); }
+        string substring(int start, int end) { return new string(sb.substring(start, end)); }
+        string setCharAt(int index, char ch) { sb.setCharAt(index, ch); return this; }
+        string deleteCharAt(int index) { sb.deleteCharAt(index); return this; }
+        char[] toCharArray(){return sb.toString().toCharArray();}
+        string insert(int offset, Object obj) { sb.insert(offset, obj); return this; }
+        boolean equals(string other) { return sb.toString().equals(other.toString()); }
+        string append(Object obj) { sb.append(obj); return this; }
+        string remove(int start, int end) { sb.delete(start, end); return this; }
+        string[] split(String regex) {
+            String[] parts = sb.toString().split(regex);
+            string[] result = new string[parts.length];
+            for (int i = 0; i < parts.length; i++) {
+                result[i] = new string(parts[i]);
+            }
+            return result;
+        }
+        boolean contains(string substr) {
+            return sb.toString().contains(substr.toString());
+        }
+    }
+
+    static class map<K,V> extends HashMap<K,V>{
+        @Override public V get(Object k){ return super.get(k); }
+        public V get(K k, V def){ return super.getOrDefault(k,def); }
+        public map<K,V> p(K k, V v){ super.put(k,v); return this; }
+        public V r(K k){ return super.remove(k); }
+        public boolean ck(K k){ return super.containsKey(k); }
+        public boolean hv(V v){ return super.containsValue(v); }
+        public V cia(K k, java.util.function.Function<? super K, ? extends V> f){ return super.computeIfAbsent(k,f); }
+    }
+
+    static class pw extends PrintWriter {
+        pw(OutputStream out) {super(out);}
+        void p(Object x){print(x);}
+        void pl(){println();}
+        void pl(Object x) {println(x);}
+    }
+}

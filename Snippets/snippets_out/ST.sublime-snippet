@@ -1,0 +1,62 @@
+<snippet>
+<content><![CDATA[
+class ST{
+    int[] t;
+    int[] lz;
+    int n;
+    ST(int n){
+        this.n=n;
+        t=new int[4*n];
+        lz=new int[4*n];
+        Arrays.fill(lz,Integer.MIN_VALUE);
+    }
+    void u(int s,int e,int val){
+        u(0,0,n-1,s,e,val);
+    }
+    void u(int i,int l,int r,int s,int e,int val){
+        if(lz[i]!=Integer.MIN_VALUE){
+            t[i]=lz[i];
+            if(l!=r){
+                lz[2*i+1]=lz[i];
+                lz[2*i+2]=lz[i];
+            }
+            lz[i]=Integer.MIN_VALUE;
+        }
+        if(l>e || r<s) return;
+        if(s<=l && r<=e){
+            t[i]=val;
+            if(l!=r){
+                lz[2*i+1]=val;
+                lz[2*i+2]=val;
+            }
+        } else {
+            int m=l+(r-l)/2;
+            u(2*i+1,l,m,s,e,val);
+            u(2*i+2,m+1,r,s,e,val);
+            t[i]=Math.max(t[2*i+1],t[2*i+2]);
+        }
+    }
+    int mx(int s,int e){
+        return mx(0,0,n-1,s,e);
+    }
+    int mx(int i,int l,int r,int s,int e){
+        if(lz[i]!=Integer.MIN_VALUE){
+            t[i]=lz[i];
+            if(l!=r){
+                lz[2*i+1]=lz[i];
+                lz[2*i+2]=lz[i];
+            }
+            lz[i]=Integer.MIN_VALUE;
+        }
+        if(l>e || r<s) return Integer.MIN_VALUE;
+        if(s<=l && r<=e) return t[i];
+        int m=l+(r-l)/2;
+        int L=mx(2*i+1,l,m,s,e);
+        int R=mx(2*i+2,m+1,r,s,e);
+        return Math.max(L,R);
+    }
+}
+]]></content>
+<tabTrigger>ST</tabTrigger>
+<scope>source.java</scope>
+</snippet>

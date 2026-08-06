@@ -1,0 +1,19 @@
+<snippet>
+<content><![CDATA[
+void radixSort(int[] arr){
+    int n=arr.length;
+    int[] tmp=new int[n];
+    final int MASK=0xFF;
+    final int BITS=32;
+    for(int shift=0;shift<BITS;shift+=8){
+        int[] count=new int[256];
+        for(int i=0;i<n;i++) count[(arr[i]>>shift)&MASK]++;
+        for(int i=1;i<256;i++) count[i]+=count[i-1];
+        for(int i=n-1;i>=0;i--) tmp[--count[(arr[i]>>shift)&MASK]]=arr[i];
+        System.arraycopy(tmp,0,arr,0,n);
+    }
+}
+]]></content>
+<tabTrigger>radixSort</tabTrigger>
+<scope>source.java</scope>
+</snippet>

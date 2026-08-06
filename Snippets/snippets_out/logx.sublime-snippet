@@ -1,0 +1,10 @@
+<snippet>
+<content><![CDATA[
+public int logx(int n,int x){
+    int ans=(int)(Math.log(n)/Math.log(x));
+    return ans;
+}
+]]></content>
+<tabTrigger>logx</tabTrigger>
+<scope>source.java</scope>
+</snippet>

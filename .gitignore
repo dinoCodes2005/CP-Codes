@@ -1,0 +1,20 @@
+###########################
+# JAVA COMPILATION FILES #
+###########################
+
+# All .class files
+*.class
+
+# All inner-class files (solution$DSU.class)
+*$.class
+*.class
+
+# Ignore all class files for all nested classes
+*$*.class
+
+input.txt
+output.txt
+
+*.code-snippets
+
+

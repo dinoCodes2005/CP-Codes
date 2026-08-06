@@ -1,0 +1,13 @@
+<snippet>
+<content><![CDATA[
+public static int[][] read2(int n,int m) throws IOException{
+    int[][] arr=new int[n][m];
+    for(int i=0;i<n;i++)
+        for(int j=0;j<m;j++)
+            arr[i][j]=in.i();
+    return arr;
+}
+]]></content>
+<tabTrigger>read2</tabTrigger>
+<scope>source.java</scope>
+</snippet>

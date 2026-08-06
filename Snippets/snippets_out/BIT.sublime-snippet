@@ -1,0 +1,25 @@
+<snippet>
+<content><![CDATA[
+class BIT{
+    long[] t;
+    int n;
+    BIT(int n){
+        this.n=n+1;
+        t=new long[n+2];
+    }
+    void u(int i,long dx){
+        for(++i;i<=n;i+=i&-i) t[i]+=dx;
+    }
+    long q(int l,int r){
+        return q(r)-(l>0?q(l-1):0L);
+    }
+    long q(int i){
+        long s=0;
+        for(++i;i>0;i-=i&-i) s+=t[i];
+        return s;
+    }
+}
+]]></content>
+<tabTrigger>BIT</tabTrigger>
+<scope>source.java</scope>
+</snippet>

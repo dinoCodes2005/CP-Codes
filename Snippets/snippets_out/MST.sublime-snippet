@@ -1,0 +1,60 @@
+<snippet>
+<content><![CDATA[
+class MST{
+    int n;
+    int[] a;
+    N root;
+
+    MST(int[] a,int n){
+        this.a=a;
+        this.n=n;
+        this.root=build(0,n-1);
+    }
+
+    N build(int l,int r){
+        if(l==r){
+            N now=new N(null,null);
+            now.lst.add(a[l]);
+            return now;
+        } else {
+            int m=l+(r-l)/2;
+            N lft=build(l,m);
+            N rgt=build(m+1,r);
+            N now=new N(lft,rgt);
+            List<Integer> A=lft.lst;
+            List<Integer> B=rgt.lst;
+            int i=0,j=0;
+            List<Integer> nst=new ArrayList<>(A.size()+B.size());
+            while(i<A.size() && j<B.size()){
+                if(A.get(i)<=B.get(j)) nst.add(A.get(i++));
+                else nst.add(B.get(j++));
+            }
+            while(i<A.size()) nst.add(A.get(i++));
+            while(j<B.size()) nst.add(B.get(j++));
+            now.lst=nst;
+            return now;
+        }
+    }
+
+    List<Integer> q(N root,int l,int r,int s,int e){
+        if(root==null)return new ArrayList<>();
+        if(l>e || r<s)return new ArrayList<>();
+        if(s<=l && r<=e)return root.lst;
+        int m=l+(r-l)/2;
+        List<Integer> L=q(root.l,l,m,s,e);
+        List<Integer> R=q(root.r,m+1,r,s,e);
+        List<Integer> nst=new ArrayList<>(L.size()+R.size());
+        int i=0,j=0;
+        while(i<L.size() && j<R.size()){
+            if(L.get(i)<=R.get(j)) nst.add(L.get(i++));
+            else nst.add(R.get(j++));
+        }
+        while(i<L.size()) nst.add(L.get(i++));
+        while(j<R.size()) nst.add(R.get(j++));
+        return nst;
+    }
+}
+]]></content>
+<tabTrigger>MST</tabTrigger>
+<scope>source.java</scope>
+</snippet>

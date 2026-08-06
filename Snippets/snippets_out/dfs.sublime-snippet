@@ -1,0 +1,16 @@
+<snippet>
+<content><![CDATA[
+public static boolean dfs(int u,int parent,Map<Integer,List<Integer>> g,boolean[] vis){
+    vis[u]=true;
+    if(!g.containsKey(u)) return false;
+    for(int v:g.get(u)){
+        if(!vis[v]){
+            if(dfs(v,u,g,vis)) return true;
+        } else if(v!=parent) return true;
+    }
+    return false;
+}
+]]></content>
+<tabTrigger>dfs</tabTrigger>
+<scope>source.java</scope>
+</snippet>

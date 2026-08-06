@@ -1,0 +1,22 @@
+<snippet>
+<content><![CDATA[
+public static int LIS(int[] a){
+    List<Integer> list=new ArrayList<>();
+    for(int val:a){
+        int low=0,high=list.size()-1,pos=list.size();
+        while(low<high){
+            int mid=(low+high)/2;
+            if(list.get(mid)>=val){
+                pos=mid;
+                high=mid-1;
+            } else low=mid+1;
+        }
+        if(pos==list.size()) list.add(val);
+        else list.set(pos,val);
+    }
+    return list.size();
+}
+]]></content>
+<tabTrigger>LIS</tabTrigger>
+<scope>source.java</scope>
+</snippet>
