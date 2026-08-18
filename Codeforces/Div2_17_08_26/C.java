@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class A {
+public class C {
     static FastReader in;
     static pw out;
 
@@ -14,34 +14,56 @@ public class A {
             out = new pw(System.out);
         }
         int t = in.i();
-        A obj = new A();
+        C obj = new C();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
+        return arr;
+    }
+    Map<Integer,List<Integer>> map;
+    int n,m;
+    int h[];
     public void solveTestCase() throws Exception {
         // write code
-        int n = in.i();
-        int m = in.i();
-        int a[] = new int[26];
-        for(int i=0;i<n;i++){
-            string s = in.nl();
-            a[s.c(0)-'a']++;
+        n = in.i();
+        h = new int[n+1];
+        map = new HashMap<>();
+
+        for(int i=0;i<n-1;i++){
+            int p = in.i();
+            map.computeIfAbsent(p, k->new ArrayList<>()).add(i+2);
+            map.computeIfAbsent(i+2, k->new ArrayList<>()).add(p);
         }
-        boolean yes = true;
+        m = in.i();
+        int dams[] = read(m);
+        out.p(m-1+" ");
+        if(m == 1) {
+            out.pl();
+            return;
+        }
+        dfs(1,-1);
+        int mn = dams[0];
+        for(int i=1;i<m;i++){
+            if(h[dams[i]] < h[mn]) mn = dams[i];
+        }
+
         for(int i=0;i<m;i++){
-            string s = in.nl();
-            for(int j=0;j<s.length();j++){
-                int c = s.c(j) - 'A';
-                if(a[c] == 0){
-                    yes = false;
-                    break;
-                }
-            }
+            if(mn != dams[i]) out.p(dams[i]+" ");
         }
-        if(yes) out.pl("yes");
-        else out.pl("no");
+        out.pl();
+    }
+
+    public void dfs(int node,int parent){
+        if(parent != -1)
+            h[node] = 1 + h[parent];
+        for(int nei:map.getOrDefault(node, new ArrayList<>())) {
+            if(nei != parent)
+            dfs(nei,node);
+        }
     }
 
     static class FastReader {

@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class A {
+public class D {
     static FastReader in;
     static pw out;
 
@@ -14,7 +14,7 @@ public class A {
             out = new pw(System.out);
         }
         int t = in.i();
-        A obj = new A();
+        D obj = new D();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
@@ -22,26 +22,6 @@ public class A {
 
     public void solveTestCase() throws Exception {
         // write code
-        int n = in.i();
-        int m = in.i();
-        int a[] = new int[26];
-        for(int i=0;i<n;i++){
-            string s = in.nl();
-            a[s.c(0)-'a']++;
-        }
-        boolean yes = true;
-        for(int i=0;i<m;i++){
-            string s = in.nl();
-            for(int j=0;j<s.length();j++){
-                int c = s.c(j) - 'A';
-                if(a[c] == 0){
-                    yes = false;
-                    break;
-                }
-            }
-        }
-        if(yes) out.pl("yes");
-        else out.pl("no");
     }
 
     static class FastReader {

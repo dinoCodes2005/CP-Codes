@@ -19,9 +19,44 @@ public class B {
         out.flush();
         out.close();
     }
-
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
+        return arr;
+    }
     public void solveTestCase() throws Exception {
         // write code
+        int n = in.i();
+        int m = in.i();
+        int a[] = read(n);
+        int b[] = read(m);
+        long s1 = a[n-1];
+        long s2 = b[m-1];
+        for(int i=0;i+1<n;i++){
+            s1 += (a[i] - a[i+1]+1l);
+        }
+        for(int i=0;i+1<m;i++){
+            s2 += (b[i] - b[i+1]+1l);
+        }   
+        // out.pl(s1+" "+s2);
+        out.pl((s1 >= s2 ? 1 : 2));
+
+        /* 
+        4 3 2 1 ------- 1 10 
+        4 3 2 1 ------- 1 9 - B
+        3 3 2 1 ------- 1 9 - V
+        3 3 2 1 ------- 1 8 - B
+        2 3 2 1 ------- 1 8 - V
+        2 3 2 1 ------- 1 7 - B
+        2 2 2 1 ------- 1 6 - V
+        2 2 2 1 ------- 1 5 - B
+        2 1 2 1 ------- 1 5 - V
+        2 1 2 1 ------- 1 4 - B
+        2 1 1 1 ------- 1 4 - V
+        2 1 1 1 ------- 1 3 - B
+        2 1 0 1 ------- 1 3 - V
+        */
+
     }
 
     static class FastReader {
