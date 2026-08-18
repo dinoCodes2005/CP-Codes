@@ -15,7 +15,10 @@ public class D {
         }
         int t = in.i();
         D obj = new D();
-        while(t-- > 0) obj.solveTestCase();
+        while(t-- > 0) {
+            out.pl("---------------Test Case------------");
+            obj.solveTestCase();
+        }
         out.flush();
         out.close();
     }
@@ -34,28 +37,69 @@ public class D {
         }
         Collections.sort(fc);
         f.addAll(fc);
-        // for(long val:f) out.p(val+" ");
-        // out.pl();
-        long p[] = new long[f.size()];
+        out.p("F = ");
+        for(long val:f) out.p(val+" ");
+        out.pl();
+        int sz = f.size();
+        long p[] = new long[sz];
+        long px[] = new long[sz];
+        px[0] = f.get(0);
         p[0] = S;
         long max_w = f.get(0);
-         for(int i=1;i<f.size();i++){
+         for(int i=1;i<sz;i++){
             long w = f.get(i);
             long h = S / f.get(i);
             long extra_w = w-max_w;
             max_w = w;
             p[i] = p[i-1] + (extra_w * h);
+            px[i] = px[i-1] + f.get(i);
         }
+        out.p("P[i] = ");
+        for(long val:p) out.p(val+" ");
+        out.pl();
+        out.p("Px[i] = ");
+        for(long val:px) out.p(val+" ");
+        out.pl();
 
         while(q-->0){
             int x = in.i();
             int y = in.i();
-            int posx = Collections.binarySearch(f,x);
-            if(posx < 0) posx = -(posx + 1);
+            int posx = 0;
+            int l = 0;
+            int r = sz-1;
+            while(l <= r){
+                int mid = l+(r-l)/2;
+                if(f.get(mid) <= x){
+                    l = mid + 1;
+                    posx = mid;
+                }else r = mid - 1;
+            }
             long ans = p[posx];
+            long rgt = (x - f.get(posx));
+            if(rgt > 0)
+            rgt *= min(y,(S / f.get(posx+1)));
+            ans += rgt;
+
+            l = 0;
+            r = sz-1;
+            int posy = 0;
+            while(l <= r){
+                int mid = l+(r-l)/2;
+                if(S / f.get(mid) > y){
+                    l = mid + 1;
+                    posy = mid;
+                }else r = mid - 1;
+            }
+            out.pl("Posx = "+posx);
+            out.pl("Posy = "+posy);
+            long xs = x < f.get(posy) ? px[posy-1] : px[posy];
+            long xxs = posy >= 1 ? (x - px[posy-1]) * (S / px[posy]) : 0;
+            long extra_above = p[posy] - y*xs - xxs;
+            ans -= extra_above;
+            out.pl(ans);
 
         }
-        // out.pl(p[f.size()-1]);
+        // out.pl(p[sz-1]);
     }
     public static long min(long... values){long ans=Long.MAX_VALUE;for(long v:values)ans=Math.min(ans,v);return ans;}
     public long intersect(long x,long y,long p,long q){
