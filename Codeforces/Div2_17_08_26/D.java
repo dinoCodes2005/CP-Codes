@@ -22,6 +22,44 @@ public class D {
 
     public void solveTestCase() throws Exception {
         // write code
+        long S = in.l();
+        int q = in.i();
+        List<Integer> f = new ArrayList<>();
+        List<Integer> fc = new ArrayList<>();
+        for(long i=1;i*i<=S;i++){
+            if(S % i == 0){
+                f.add((int)i);
+                if(i != (S / i)) fc.add((int)(S/i));
+            }
+        }
+        Collections.sort(fc);
+        f.addAll(fc);
+        // for(long val:f) out.p(val+" ");
+        // out.pl();
+        long p[] = new long[f.size()];
+        p[0] = S;
+        long max_w = f.get(0);
+         for(int i=1;i<f.size();i++){
+            long w = f.get(i);
+            long h = S / f.get(i);
+            long extra_w = w-max_w;
+            max_w = w;
+            p[i] = p[i-1] + (extra_w * h);
+        }
+
+        while(q-->0){
+            int x = in.i();
+            int y = in.i();
+            int posx = Collections.binarySearch(f,x);
+            if(posx < 0) posx = -(posx + 1);
+            long ans = p[posx];
+
+        }
+        // out.pl(p[f.size()-1]);
+    }
+    public static long min(long... values){long ans=Long.MAX_VALUE;for(long v:values)ans=Math.min(ans,v);return ans;}
+    public long intersect(long x,long y,long p,long q){
+        return min(x,p) * min(y,q);
     }
 
     static class FastReader {
