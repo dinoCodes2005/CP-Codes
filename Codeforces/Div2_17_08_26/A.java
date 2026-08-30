@@ -43,6 +43,7 @@ public class A {
         if(yes) out.pl("yes");
         else out.pl("no");
     }
+    
 
     static class FastReader {
         BufferedReader br;

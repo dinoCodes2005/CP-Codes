@@ -25,30 +25,54 @@ public class E {
         return arr;
     }
     public void solveTestCase() throws Exception {
-        // write code
+        //write code
         int n = in.i();
         int a[] = read(n);
         Set<Integer> set = new HashSet<>();
+        int p[] = new int[n];
+        int s[] = new int[n];
+
+        for(int i=1;i<n;i++){
+            p[i] = p[i-1] + (a[i] - a[i-1]);
+        }
+
+        for(int i=n-2;i>=0;i--){
+            s[i] = s[i+1] + (a[i] - a[i+1]);
+        }
+
         int z = 0;
         for(int i=0;i<n;i++){
             if(a[i] != 0) set.add(a[i]);
             else z++;
         }
+
         int c = 0;
+
         if(set.size() == 1){
             c = n - z;
             out.pl(c);
             return;
         }
 
+        if(s[1] == 0)
+            c++;
+
+        if(n > 3 && s[2] == a[0])
+            c++;
+
+        if(n > 3 && p[n-3] == a[n-1])
+            c++;
+
+        if(p[n-2] == 0)
+            c++;
+
         for(int i=2;i<n-2;i++){
-            int next = a[i+1];
-            int prev = a[i-1];
-            int next_next = a[i+2];
-            int prev_prev = a[i-2];
-            int d_next = next_next - next;
-            int d_prev = prev_prev - prev;
-            if(d_next + d_prev != a[i] && balanced(before & after)){
+            int d_next = a[i+2] - a[i+1];
+            int d_prev = a[i-2] - a[i-1];
+
+            if(d_next + d_prev != a[i] &&
+            p[i-2] == 0 &&
+            s[i+2] == 0){
                 c++;
             }
         }

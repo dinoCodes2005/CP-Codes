@@ -1,42 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-public class LineSegmentIntersection {
+public class E {
     static FastReader in;
     static pw out;
 
-    static class Point {
-        double x,y;
-        Point(double x,double y){
-            this.x = x;
-            this.y = y;
-        }
-
-        Point add(double t){
-            return new Point(this.x+t,this.y+t);
-        }
-
-        Point add(Point p){
-            return new Point(this.x+p.x,this.y+p.y);
-        }
-
-        Point sub(Point p){
-            return new Point(this.x-p.x,this.y-p.y);
-        }
-
-        Point mul(double t){
-            return new Point(this.x*t,this.y*t);
-        }
-
-        double cross(Point p2){
-            return (this.x * p2.y) - (this.y * p2.x);
-        }
-
-        boolean between(Point l,Point r){
-           return (Math.min(l.x,r.x) <= this.x && this.x <= Math.max(l.x,r.x) &&
-                   Math.min(l.y,r.y) <= this.y && this.y <= Math.max(l.y,r.y));
-        }
-    }
     public static void main(String[] args) throws Exception {
         try {
             in = new FastReader(new FileInputStream("input.txt"));
@@ -45,81 +13,37 @@ public class LineSegmentIntersection {
             in = new FastReader(System.in);
             out = new pw(System.out);
         }
-        int t = in.i();
-        LineSegmentIntersection obj = new LineSegmentIntersection();
-        while(t-- > 0) obj.solveTestCase();
+        E obj = new E();
+        obj.solveTestCase();
         out.flush();
         out.close();
-    }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
+    }   
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
         return arr;
     }
     public void solveTestCase() throws Exception {
         // write code
-
-        /*
-            Let a1 be the starting point of a the first line segment
-            and d1 be the direction vector 
-            and t be the parameter that shows the distance moved in the direction vector
-            then along line 1 ,
-            r = a1 + (t * d1) ; the intersecting point 
-
-            for the second line , 
-            let d2 be the direction vector along it 
-            then i can get another vector (r - a2) along it 
-
-            since d2 and (r - a2) along the same direction
-            then cross product will be zero
-
-            (r - a2) x d2 = 0 
-            (a1 + (t * d1) - a2) x d2 = 0
-            a1 x d2 - a2 x d2 + t*(d1 x d2) = 0
-            (a2 x d2 - a1 x d2) / (d1 x d2) = t
-
-
-            d2 x (a2 - a1) / (d1 x d2) = t
-        */
-        long x1 = in.l();
-        long y1 = in.l();
-        long x2 = in.l();
-        long y2 = in.l();
-        long x3 = in.l();
-        long y3 = in.l();
-        long x4 = in.l();
-        long y4 = in.l();
-        Point p1 = new Point(x1,y1);
-        Point p2 = new Point(x2,y2);
-        Point p3 = new Point(x3,y3);
-        Point p4 = new Point(x4,y4);
-        Point d1 = p2.sub(p1);
-        Point d2 = p4.sub(p3);
-
-        if(Double.compare(d1.cross(d2),0.0) == 0){
-            if(Double.compare(p3.sub(p1).cross(d1), 0.0) != 0){
-                out.pl("NO");
-                return;
+        int n = in.i();
+        int k = in.i();
+        int a[] = read(n);
+        Map<Long,Integer> map = new HashMap<>();
+        map.put(0l,0);
+        long s = 0;
+        int last = 0;
+        int ans = 0;
+        for(int i=0;i<n;i++){
+            s = (s + a[i]) % k;
+            if(map.containsKey(s) && last <= map.get(s)){
+                ans++;
+                last = i+1;
             }
-            if(p1.between(p3,p4) || p2.between(p3,p4) || p3.between(p1,p2) || p4.between(p1,p2)){
-                out.pl("YES");
-                return;
-            }
-            out.pl("NO");
-            return;
+            map.put(s,i+1);
         }
-        double t = (p3.cross(d2) - p1.cross(d2))/ d1.cross(d2);
-        Point r = p1.add(d1.mul(t));
 
-        //check whether this point r lies in between line 2
-        if(r.between(p1, p2) && r.between(p3, p4)){
-            out.pl("YES");
-        }else{
-            out.pl("NO");
-        }
+        out.pl(ans);
     }
-    public static double min(double... values){double ans=Double.MAX_VALUE;for(double v:values)ans=Math.min(ans,v);return ans;}
-    public static double max(double... values) {double ans = -Double.MAX_VALUE;for (double v : values) ans = Math.max(ans, v);return ans;}
 
     static class FastReader {
         BufferedReader br;
