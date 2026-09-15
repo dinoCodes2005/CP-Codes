@@ -36,7 +36,6 @@ public class D {
         lst = new ArrayList<>();
         f(1,k);
     }
-
     public void f(int i,int k){
         if(i == n) {
             if(k % n == 0){
@@ -115,3 +114,14 @@ public class D {
         void pl(Object x) {println(x);}
     }
 }
+
+
+
+
+
+
+
+
+
+
+

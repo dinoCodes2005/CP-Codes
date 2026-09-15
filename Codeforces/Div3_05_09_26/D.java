@@ -1,41 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-public class LineSegmentIntersection {
+public class D {
     static FastReader in;
     static pw out;
 
-    static class Point {
-        long x,y;
-        Point(long x,long y){
-            this.x = x;
-            this.y = y;
-        }
-
-        Point add(long t){
-            return new Point(this.x+t,this.y+t);
-        }
-
-        Point add(Point p){
-            return new Point(this.x+p.x,this.y+p.y);
-        }
-
-        Point sub(Point p){
-            return new Point(this.x-p.x,this.y-p.y);
-        }
-
-        Point mul(long t){
-            return new Point(this.x*t,this.y*t);
-        }
-
-        long cross(Point p2){
-            return (this.x * p2.y) - (this.y * p2.x);
-        }
-
-        long orient(Point b,Point c){
-            return (b.sub(this)).cross(c.sub(this));
-        }
-    }
     public static void main(String[] args) throws Exception {
         try {
             in = new FastReader(new FileInputStream("input.txt"));
@@ -45,53 +14,61 @@ public class LineSegmentIntersection {
             out = new pw(System.out);
         }
         int t = in.i();
-        LineSegmentIntersection obj = new LineSegmentIntersection();
+        D obj = new D();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
         return arr;
     }
-    public boolean solveTestCase() throws Exception {
-        long x1 = in.l();
-        long y1 = in.l();
-        long x2 = in.l();
-        long y2 = in.l();
-        long x3 = in.l();
-        long y3 = in.l();
-        long x4 = in.l();
-        long y4 = in.l();
+    public static Map<Integer,Integer> freqMap(int[] arr){
+        Map<Integer,Integer> map=new HashMap<>();
+        for(int num:arr){
+            if(map.containsKey(num)) map.put(num,map.get(num)+1);
+            else map.put(num,1);
+        }
+        return map;
+    }
+    public void solveTestCase() throws Exception {
+        // write code
+        int n = in.i();
+        int arr[] = read(n);
 
-        Point p1 = new Point(x1, y1);
-        Point p2 = new Point(x2, y2);
-        Point p3 = new Point(x3, y3);
-        Point p4 = new Point(x4, y4);
+        ArrayList<Integer>[] pos = new ArrayList[2];
+        pos[0] = new ArrayList<>();
+        pos[1] = new ArrayList<>();
 
-        long oa = p1.orient(p2, p3);
-        long ob = p1.orient(p2, p4);
-        long oc = p3.orient(p4, p1);
-        long od = p3.orient(p4, p2);
-
-        if ((oa > 0 && ob < 0 || oa < 0 && ob > 0) &&
-            (oc > 0 && od < 0 || oc < 0 && od > 0)) {
-            return true;
+        for(int i=0;i<n;i++){
+            if(arr[i] > 0) pos[1].add(i);
+            else pos[0].add(i);
         }
 
-        if (oa == 0 && onSegment(p1, p2, p3)) return true;
-        if (ob == 0 && onSegment(p1, p2, p4)) return true;
-        if (oc == 0 && onSegment(p3, p4, p1)) return true;
-        if (od == 0 && onSegment(p3, p4, p2)) return true;
+        if(pos[0].size() == 1){
+            out.pl("No");
+            return;
+        }
 
-        return false;
+        out.pl("Yes");
+
+        string res = new string();
+        for(int i=0;i<n;i++) res.add('C');
+
+        if(!pos[0].isEmpty()){
+            int idx = pos[0].remove(pos[0].size()-1);
+            res.setCharAt(idx,'A');
+
+            for(int i:pos[0]){
+                res.setCharAt(i,'B');
+            }
+        }
+
+        out.pl(res);
     }
 
-    private boolean onSegment(Point a, Point b, Point p) {
-        return Math.min(a.x, b.x) <= p.x && p.x <= Math.max(a.x, b.x)
-            && Math.min(a.y, b.y) <= p.y && p.y <= Math.max(a.y, b.y);
-    }
+    public static int max(int... values){int ans=Integer.MIN_VALUE;for(int v:values)ans=Math.max(ans,v);return ans;}
 
     static class FastReader {
         BufferedReader br;

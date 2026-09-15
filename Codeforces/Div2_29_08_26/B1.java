@@ -1,55 +1,56 @@
 import java.io.*;
 import java.util.*;
 
-public class StaticRangeSumQueries {
+public class B1 {
     static FastReader in;
-    static pw out; 
-    DSU
+    static pw out;
+
     public static void main(String[] args) throws Exception {
         try {
-            in = new FastReader(new FileInputStream("test_input.txt"));
+            in = new FastReader(new FileInputStream("input.txt"));
             out = new pw(new FileOutputStream("output.txt"));
         } catch(Exception e) {
             in = new FastReader(System.in);
             out = new pw(System.out);
         }
-        StaticRangeSumQueries obj = new StaticRangeSumQueries();
-        long start = System.nanoTime();
-
-        obj.solveTestCase();
-
-        long end = System.nanoTime();
-
-        System.err.println("Time = " + (end - start) / 1_000_000.0 + " ms");
+        int t = in.i();
+        B1 obj = new B1();
+        while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-
     public static int[] read(int n) throws IOException{
         int[] arr=new int[n];
         for(int i=0;i<n;i++) arr[i]=in.i();
         return arr;
     }
-
     public void solveTestCase() throws Exception {
         // write code
         int n = in.i();
-        int q = in.i();
+        int m = in.i();
         int a[] = read(n);
-
-        long p[] = new long[n];
-        p[0] = a[0];
-        for(int i=1;i<n;i++){
-            p[i] = p[i-1] + a[i];
+        HashMap<Integer,Integer> map = new HashMap<>();
+        Arrays.sort(a);
+        for(int val:a) map.put(val,map.getOrDefault(val, 0)+1);
+        int max = 1;
+        for(int x=1;x<=m;x++){
+            int now = map.getOrDefault(2*x,0);
+            int l = 0;
+            int r = n-1;
+            int pos = n;
+            while(l <= r){
+                int mid = l + (r - l) / 2;
+                if(a[mid] >= x) {
+                    r = mid - 1;
+                    pos = mid;
+                }
+                else l = mid + 1;
+            }
+            if(pos != -1) now += (n-pos);
+            max = Math.max(max,now);
         }
 
-        for(int i=0;i<q;i++){
-            int l = in.i()-1;
-            int r = in.i()-1;
-            long res = p[r];
-            if(l != 0) res -= p[l-1];
-            out.pl(res);
-        }
+        out.pl(max);
     }
 
     static class FastReader {

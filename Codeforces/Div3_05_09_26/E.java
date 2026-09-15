@@ -1,0 +1,192 @@
+import java.io.*;
+import java.util.*;
+
+public class E {
+    static FastReader in;
+    static pw out;
+    final int pinf = Integer.MAX_VALUE;
+    public static void main(String[] args) throws Exception {
+        try {
+            in = new FastReader(new FileInputStream("input.txt"));
+            out = new pw(new FileOutputStream("output.txt"));
+        } catch(Exception e) {
+            in = new FastReader(System.in);
+            out = new pw(System.out);
+        }
+        int t = in.i();
+        E obj = new E();
+        while(t-- > 0) obj.solveTestCase();
+        out.flush();
+        out.close();
+    }
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
+        return arr;
+    }
+
+    public void solveTestCase() throws Exception {
+        // write code
+        int n = in.i();
+        int b[] = read(n);
+        int a[] = new int[n];
+
+        for(int i=0;i<n;i++){
+            if(b[i] == 0) a[i] = 1;
+        }
+
+        for(int i=0;i<n;i++){
+            if(b[i] == -1) continue;
+
+            boolean at_least = false;
+
+            if(i+b[i] < n){
+                if(a[i+b[i]] == 1) {
+                    at_least = true;
+                }
+                else if(b[i+b[i]] == -1){
+                    at_least = true;
+                    a[i+b[i]] = 1;
+                }
+            }
+
+            if(i-b[i] >= 0){
+                if(a[i-b[i]] == 1) {
+                    at_least = true;
+                }
+                else if(b[i-b[i]] == -1){
+                    at_least = true;
+                    a[i-b[i]] = 1;
+                }
+            }
+
+            if(!at_least) {
+                out.pl(-1);
+                return;
+            }
+        }
+
+        boolean have = false;
+        for(int i=0;i<n;i++){
+            if(a[i] == 1){
+                have = true;
+                break;
+            }
+        }
+
+        if(!have) a[0] = 1;
+
+        int p[] = new int[n];
+        p[0] = (a[0] == 1) ? 0 : -1;
+
+        for(int i=1;i<n;i++){
+            if(a[i] == 1) p[i] = i;
+            else p[i] = p[i-1];
+        }
+
+        int s[] = new int[n];
+        s[n-1] = (a[n-1] == 1) ? (n-1) : -1;
+
+        for(int i=n-2;i>=0;i--){
+            if(a[i] == 1) s[i] = i;
+            else s[i] = s[i+1];
+        }
+
+        for(int i=0;i<n;i++){
+            if(b[i] == -1) continue;
+
+            int bf = p[i];
+            int af = s[i];
+            int mn = pinf;
+
+            if(bf != -1) mn = abs(i-bf);
+            if(af != -1) mn = min(mn,abs(i-af));
+
+            if(mn != b[i]){
+                out.pl(-1);
+                return;
+            }
+        }
+
+        for(int i=0;i<n;i++){
+            out.p(a[i]);
+        }
+        out.pl();
+    }
+    public static int abs(int n){return Math.abs(n);}
+    public static int min(int... values){int ans=Integer.MAX_VALUE;for(int v:values)ans=Math.min(ans,v);return ans;}
+
+    static class FastReader {
+        private final InputStream in;
+        private final byte[] buffer = new byte[1 << 16];
+        private int ptr = 0, len = 0;
+        public FastReader(InputStream stream){in=stream;}
+        private int read() throws IOException {if(ptr>=len){len=in.read(buffer);ptr=0;if(len<=0)return -1;}return buffer[ptr++];}
+        String n() throws IOException {int c;do{c=read();}while(c<=32);StringBuilder sb=new StringBuilder();while(c>32){sb.append((char)c);c=read();}return sb.toString();}
+        string w() throws IOException{return new string(n());}
+        int i() throws IOException {int c;do{c=read();}while(c<=32);int sign=1;if(c=='-'){sign=-1;c=read();}int res=0;while(c>32){res=res*10+c-'0';c=read();}return res*sign;}
+        long l() throws IOException {int c;do{c=read();}while(c<=32);long res=0;while(c>32){res=res*10+c-'0';c=read();}return res;}
+        double d() throws IOException{return Double.parseDouble(n());}
+        string nl() throws IOException{return new string(n());}
+    }
+
+    static class string {
+        StringBuilder sb;
+        string() { sb = new StringBuilder(); }
+        string(int capacity) { sb = new StringBuilder(capacity); }
+        string(java.lang.String s) { sb = new StringBuilder(s); }
+        string add(Object o) { sb.append(o); return this; }
+        string add(int o) { sb.append(o); return this; }
+        string add(long o) { sb.append(o); return this; }
+        string add(char o) { sb.append(o); return this; }
+        string lower() { return new string(sb.toString().toLowerCase()); }
+        public String toString() { return sb.toString(); }
+        public char c(int i){return sb.charAt(i);}
+        public int length(){return sb.length();}
+        string reverse() { return new string(sb.reverse().toString()); }
+        string substring(int start, int end) { return new string(sb.substring(start, end)); }
+        string setCharAt(int index, char ch) { sb.setCharAt(index, ch); return this; }
+        string deleteCharAt(int index) { sb.deleteCharAt(index); return this; }
+        char[] toCharArray(){return sb.toString().toCharArray();}
+        string insert(int offset, Object obj) { sb.insert(offset, obj); return this; }
+        boolean equals(string other) { return sb.toString().equals(other.toString()); }
+        string append(Object obj) { sb.append(obj); return this; }
+        string append(int obj) { sb.append(obj); return this; }
+        string append(long obj) { sb.append(obj); return this; }
+        string append(char obj) { sb.append(obj); return this; }
+        string remove(int start, int end) { sb.delete(start, end); return this; }
+        string[] split(String regex) {
+            String[] parts = sb.toString().split(regex);
+            string[] result = new string[parts.length];
+            for(int i=0;i<parts.length;i++) result[i] = new string(parts[i]);
+            return result;
+        }
+        boolean contains(string substr) { return sb.toString().contains(substr.toString()); }
+    }
+
+    static class map<K,V> extends HashMap<K,V>{
+        @Override public V get(Object k){ return super.get(k); }
+        public V get(K k, V def){ return super.getOrDefault(k,def); }
+        public map<K,V> p(K k, V v){ super.put(k,v); return this; }
+        public V r(K k){ return super.remove(k); }
+        public boolean ck(K k){ return super.containsKey(k); }
+        public boolean hv(V v){ return super.containsValue(v); }
+        public V cia(K k, java.util.function.Function<? super K, ? extends V> f){ return super.computeIfAbsent(k,f); }
+    }
+
+    static class pw {
+        private final OutputStream out;
+        private final byte[] buffer = new byte[1 << 16];
+        private int ptr = 0;
+        pw(OutputStream out){this.out=out;}
+        private void flushBuffer() throws IOException {if(ptr>0){out.write(buffer,0,ptr);ptr=0;}}
+        private void write(int c) throws IOException {if(ptr==buffer.length)flushBuffer();buffer[ptr++]=(byte)c;}
+        void p(int x) throws IOException {if(x==0){write('0');return;}if(x<0){write('-');x=-x;}int len=0,y=x;while(y>0){len++;y/=10;}while(len>0){int div=1;for(int i=1;i<len;i++)div*=10;write('0'+x/div);x%=div;len--;}}
+        void p(Object x) throws IOException {byte[] b=x.toString().getBytes();for(byte c:b)write(c);}
+        void pl(){try{write('\n');}catch(IOException e){throw new RuntimeException(e);}}
+        void pl(int x) throws IOException {p(x);write('\n');}
+        void pl(Object x) throws IOException {p(x);write('\n');}
+        void flush() throws IOException {flushBuffer();out.flush();}
+        void close() throws IOException {flush();out.close();}
+    }
+}

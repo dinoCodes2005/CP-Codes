@@ -1,41 +1,10 @@
 import java.io.*;
 import java.util.*;
 
-public class LineSegmentIntersection {
+public class C {
     static FastReader in;
     static pw out;
 
-    static class Point {
-        long x,y;
-        Point(long x,long y){
-            this.x = x;
-            this.y = y;
-        }
-
-        Point add(long t){
-            return new Point(this.x+t,this.y+t);
-        }
-
-        Point add(Point p){
-            return new Point(this.x+p.x,this.y+p.y);
-        }
-
-        Point sub(Point p){
-            return new Point(this.x-p.x,this.y-p.y);
-        }
-
-        Point mul(long t){
-            return new Point(this.x*t,this.y*t);
-        }
-
-        long cross(Point p2){
-            return (this.x * p2.y) - (this.y * p2.x);
-        }
-
-        long orient(Point b,Point c){
-            return (b.sub(this)).cross(c.sub(this));
-        }
-    }
     public static void main(String[] args) throws Exception {
         try {
             in = new FastReader(new FileInputStream("input.txt"));
@@ -45,52 +14,33 @@ public class LineSegmentIntersection {
             out = new pw(System.out);
         }
         int t = in.i();
-        LineSegmentIntersection obj = new LineSegmentIntersection();
+        C obj = new C();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
         return arr;
     }
-    public boolean solveTestCase() throws Exception {
-        long x1 = in.l();
-        long y1 = in.l();
-        long x2 = in.l();
-        long y2 = in.l();
-        long x3 = in.l();
-        long y3 = in.l();
-        long x4 = in.l();
-        long y4 = in.l();
-
-        Point p1 = new Point(x1, y1);
-        Point p2 = new Point(x2, y2);
-        Point p3 = new Point(x3, y3);
-        Point p4 = new Point(x4, y4);
-
-        long oa = p1.orient(p2, p3);
-        long ob = p1.orient(p2, p4);
-        long oc = p3.orient(p4, p1);
-        long od = p3.orient(p4, p2);
-
-        if ((oa > 0 && ob < 0 || oa < 0 && ob > 0) &&
-            (oc > 0 && od < 0 || oc < 0 && od > 0)) {
-            return true;
+    public void solveTestCase() throws Exception {
+        // write code
+        int n = in.i();
+        int k = in.i();
+        int a[] = read(n);
+        int max = Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            int s = 0;
+            int l = i;
+            for(int j=i;j<n;j++){
+                s += a[j];
+                int r = (n-j-1);
+                if(l + r == k) max = Math.max(s,max);
+            }
         }
 
-        if (oa == 0 && onSegment(p1, p2, p3)) return true;
-        if (ob == 0 && onSegment(p1, p2, p4)) return true;
-        if (oc == 0 && onSegment(p3, p4, p1)) return true;
-        if (od == 0 && onSegment(p3, p4, p2)) return true;
-
-        return false;
-    }
-
-    private boolean onSegment(Point a, Point b, Point p) {
-        return Math.min(a.x, b.x) <= p.x && p.x <= Math.max(a.x, b.x)
-            && Math.min(a.y, b.y) <= p.y && p.y <= Math.max(a.y, b.y);
+        out.pl(max);
     }
 
     static class FastReader {
