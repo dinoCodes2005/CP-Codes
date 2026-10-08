@@ -53,6 +53,8 @@ public class A {
         return true;
     }
 
+
+
     static class FastReader {
         private final InputStream in;
         private final byte[] buffer = new byte[1 << 16];

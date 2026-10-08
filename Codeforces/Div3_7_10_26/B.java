@@ -15,38 +15,41 @@ public class B {
         }
         int t = in.i();
         B obj = new B();
-        while(t-- > 0) obj.solveTestCase();
+        while(t-- > 0) {
+            obj.solveTestCase();
+        }
         out.flush();
         out.close();
     }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
-        return arr;
-    }
+
     public void solveTestCase() throws Exception {
         // write code
         int n = in.i();
-        int m = in.i();
-        long a[] = readL(n);
-        PriorityQueue<Long> pq = new PriorityQueue<>(Collections.reverseOrder());
-        long s = 0;
-        long max = Long.MIN_VALUE;
-        for(long val:a){
-            if(pq.size() == m-1){
-                max = Math.max(max,m*val-s);
+        string s = in.nl();
+        Stack<Integer> st = new Stack<>();
+        TreeSet<Integer> set = new TreeSet<>();
+        for(int i=0;i<n;i++) set.add(i+1);
+        for(int i=0;i<n;i++){
+            char c = s.c(i);
+            if(c == '1'){
+                st.push(i+1);
+            }else if(c == '2'){
+                if(st.isEmpty()) {
+                    set.remove(i+1);
+                    continue;
+                }
+                int top = st.pop();
+                set.remove(top);
+            }else{
+                set.remove(i+1);
             }
-
-            pq.offer(val);
-            s += val;
-            if(pq.size() == m){
-                s -= pq.poll();
-            }
-
         }
-        out.pl(max);
+        out.pl(set.size());
+        for(int val:set){
+            out.p(val+" ");
+        }
+        out.pl();
     }
-
 
     static class FastReader {
         private final InputStream in;

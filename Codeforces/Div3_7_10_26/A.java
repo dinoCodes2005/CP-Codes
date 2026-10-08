@@ -1,7 +1,9 @@
+package codeforces.Div3_7_10_26;
+
 import java.io.*;
 import java.util.*;
 
-public class B {
+public class A {
     static FastReader in;
     static pw out;
 
@@ -14,39 +16,19 @@ public class B {
             out = new pw(System.out);
         }
         int t = in.i();
-        B obj = new B();
+        A obj = new A();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
-        return arr;
-    }
+
     public void solveTestCase() throws Exception {
         // write code
-        int n = in.i();
-        int m = in.i();
-        long a[] = readL(n);
-        PriorityQueue<Long> pq = new PriorityQueue<>(Collections.reverseOrder());
-        long s = 0;
-        long max = Long.MIN_VALUE;
-        for(long val:a){
-            if(pq.size() == m-1){
-                max = Math.max(max,m*val-s);
-            }
-
-            pq.offer(val);
-            s += val;
-            if(pq.size() == m){
-                s -= pq.poll();
-            }
-
-        }
-        out.pl(max);
+        int x0 = in.i();
+        int y0 = in.i();
+        int r = in.i();
+        out.pl((x0+r) + " " + y0);
     }
-
 
     static class FastReader {
         private final InputStream in;

@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class B {
+public class D {
     static FastReader in;
     static pw out;
 
@@ -14,39 +14,44 @@ public class B {
             out = new pw(System.out);
         }
         int t = in.i();
-        B obj = new B();
+        D obj = new D();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
+
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
         return arr;
     }
+
     public void solveTestCase() throws Exception {
         // write code
         int n = in.i();
-        int m = in.i();
-        long a[] = readL(n);
-        PriorityQueue<Long> pq = new PriorityQueue<>(Collections.reverseOrder());
-        long s = 0;
-        long max = Long.MIN_VALUE;
-        for(long val:a){
-            if(pq.size() == m-1){
-                max = Math.max(max,m*val-s);
-            }
+        long k = in.l();
+        int a[][] = new int[n][3];
+        for(int i=0;i<n;i++) a[i] = read(3);
 
-            pq.offer(val);
-            s += val;
-            if(pq.size() == m){
-                s -= pq.poll();
-            }
+        Arrays.sort(a,(x,y)->Long.compare(x[0]+x[1]+x[2],y[0]+y[1]+y[2]));
 
+        long min = a[0][0] + a[0][1] + a[0][2];
+        if(a[0][0] == a[0][1] && a[0][1] == a[0][2]){
+            out.pl(min);
+            return;
         }
-        out.pl(max);
+
+        for(int i=1;i<n;i++){
+            long dx = s(a[i]) - min;
+            if(dx <= k){
+                dx -= k;
+            }
+        }
     }
 
+    public long s(int a[]){
+        return a[0] + 1l*a[1] + a[2];
+    }
 
     static class FastReader {
         private final InputStream in;

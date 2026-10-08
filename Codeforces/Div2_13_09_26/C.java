@@ -4,7 +4,7 @@ import java.util.*;
 public class C {
     static FastReader in;
     static pw out;
-
+    final long mod = 998244353;
     public static void main(String[] args) throws Exception {
         try {
             in = new FastReader(new FileInputStream("input.txt"));
@@ -19,9 +19,18 @@ public class C {
         out.flush();
         out.close();
     }
-
+    public static long[] readL(int n) throws IOException{
+        long[] arr=new long[n];
+        for(int i=0;i<n;i++) arr[i]=in.l();
+        return arr;
+    }
     public void solveTestCase() throws Exception {
         // write code
+        int n = in.i();
+        long a[] = readL(n);
+
+        Arrays.sort(a);
+        
     }
 
     static class FastReader {

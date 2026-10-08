@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class B {
+public class C {
     static FastReader in;
     static pw out;
 
@@ -14,39 +14,60 @@ public class B {
             out = new pw(System.out);
         }
         int t = in.i();
-        B obj = new B();
+        C obj = new C();
         while(t-- > 0) obj.solveTestCase();
         out.flush();
         out.close();
     }
-    public static long[] readL(int n) throws IOException{
-        long[] arr=new long[n];
-        for(int i=0;i<n;i++) arr[i]=in.l();
+    public static int[] read(int n) throws IOException{
+        int[] arr=new int[n];
+        for(int i=0;i<n;i++) arr[i]=in.i();
         return arr;
     }
     public void solveTestCase() throws Exception {
         // write code
         int n = in.i();
-        int m = in.i();
-        long a[] = readL(n);
-        PriorityQueue<Long> pq = new PriorityQueue<>(Collections.reverseOrder());
-        long s = 0;
-        long max = Long.MIN_VALUE;
-        for(long val:a){
-            if(pq.size() == m-1){
-                max = Math.max(max,m*val-s);
+        int a[] = read(n);
+        Map<Integer,Integer> e = new HashMap<>();
+        Map<Integer,Integer> o = new HashMap<>();
+        for(int i=0;i+4<n;i++){
+            int x = a[i]+a[i+2]-a[i+4];
+            if(i%2==0){
+                e.put(x,e.getOrDefault(x,0)+1);
+            }else{
+                o.put(x,o.getOrDefault(x,0)+1);
             }
-
-            pq.offer(val);
-            s += val;
-            if(pq.size() == m){
-                s -= pq.poll();
-            }
-
         }
-        out.pl(max);
+
+        long cnt = 0;
+        for(int i=0;i+4<n;i++){
+            int x = a[i]+a[i+2]-a[i+4];
+            int c = 0;
+            int cc = 0;
+            if(i%2 == 0) {
+                c = e.getOrDefault(x,0);
+                cc = o.getOrDefault(x, 0);
+            }
+            else {
+                c = o.getOrDefault(x,0);
+                cc = e.getOrDefault(x, 0);
+            }
+
+            int l4 = 0;
+            int l2 = 0;
+            if(i-4>=0 && s(i-4,a) == x) c--;
+            if(i-2>=0 && s(i-2,a) ==  x) c--;
+            if (i + 6 < n && s(i + 2, a) == x) c--;
+            if (i + 8 < n && s(i + 4, a) == x) c--;
+            cnt += (c + cc - 1l);
+        }
+
+        out.pl(cnt/2l);
     }
 
+    public int s(int i,int[] a){
+        return a[i]+a[i+2]-a[i+4];
+    }
 
     static class FastReader {
         private final InputStream in;
